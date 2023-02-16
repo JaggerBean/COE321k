@@ -21,8 +21,7 @@ def main():
     if forces.ndim == 1:
         forces = forces.reshape((1, -1))
     else:
-        print("Invalid file ordering: ")
-        return
+        exit(1)
 
     u = solver(nodes, elements, forces, disp, dimensions)
 
@@ -30,7 +29,7 @@ def main():
     u = u.reshape((-1, 2))
 
     for row_num, value in enumerate(u):
-        print("\nnode",row_num + 1,":\nx displacement =", value[0],"\ny displacement =", value[1])
+        print("\nNode",row_num + 1,":\nx displacement =", value[0],"\ny displacement =", value[1])
 
     # Plotting the truss structure to depict which nodes the data represents
     figure, fig1 = plt.subplots(1, 1)
@@ -138,14 +137,14 @@ def solver(nodes, elements, forces, disp, dimensions):
     u = slv(global_stiffness, force)  # use scipy.linalg to solve the linear system
     return u
 
-## Inputs
+# all input functions
 def read_nodes_from_text(nodes_text):
-    nodes = np.genfromtxt(nodes_text, skip_header=1)  # the first row and the first column are not used in my code
+    nodes = np.genfromtxt(nodes_text, skip_header=1)  # the first row is not used in my code
     nodes = nodes[:, 1:]  # removes the first column since I do not use the node number column of nodes that you provide
     return nodes
 
 def read_elements_from_text(elements_text):
-    elements = np.genfromtxt(elements_text, skip_header=1)  # the first row and the first column are not used in my code
+    elements = np.genfromtxt(elements_text, skip_header=1)  # the first row is not used in my code
     elements = elements[:, 1:]  # removes the first column since I do not use the element number column of elements that you provide
     return elements
 
